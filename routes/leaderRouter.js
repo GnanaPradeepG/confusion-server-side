@@ -25,20 +25,20 @@ leaderRouter.route('/')
     res.end('Deleting all leaders');
 });
 
-leaderRouter.route('/:id')
+leaderRouter.route('/:leaderId')
 .get((req,res,next)=> {
-    res.end('Will send details of the leader: ' + req.params.id +' to you!');
+    res.end('Will send details of the leader: ' + req.params.leaderId +' to you!');
 })
 .post((req, res, next) => {
     res.statusCode = 403;
-    res.end('POST operation not supported on /dishes/'+ req.params.id);
+    res.end('POST operation not supported on /dishes/'+ req.params.leaderId);
 })  
 .put((req, res, next) => {
-    res.write('Updating the leader: ' + req.params.id + '\n');
+    res.write('Updating the leader: ' + req.params.leaderId + '\n');
     res.end('Will update the leader: ' + req.body.name + 
           ' with details: ' + req.body.description);
   })
 .delete((req, res, next) => {
-      res.end('Deleting leader: ' + req.params.id);
+      res.end('Deleting leader: ' + req.params.leaderId);
   });
 module.exports = leaderRouter;
