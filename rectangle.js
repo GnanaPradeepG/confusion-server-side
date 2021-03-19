@@ -12,4 +12,4 @@ module.exports = (x,y,callback) => {
                 area:() => (x*y)
             }), 
             2000);
-}
+        }
