@@ -32,12 +32,21 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(cookieParser('12345-67890-09876-54321'));
+let session = require('express-session');
+let FileStore = require('session-file-store')(session);
+
+app.use(session({
+  name: 'session-id',
+  secret: '12345-67890-09876-54321',
+  saveUninitialized: false,
+  resave: false,
+  store: new FileStore()
+}));
 
 function auth(req, res, next) {
   console.clear()
 
-  if (!req.signedCookies.user) {
+  if (!req.session.user) {
     let authHeader = req.headers.authorization;
 
     if (!authHeader) {
@@ -53,7 +62,7 @@ function auth(req, res, next) {
     let pass = auth[1];
 
     if (user == 'admin' && pass == 'password') {
-      res.cookie('user' , 'admin' , {signed : true})
+      req.session.user = 'admin'
       next(); // authorized
     } 
     else {
@@ -64,8 +73,7 @@ function auth(req, res, next) {
     }
   }
   else{
-    console.log('here');
-    if (req.signedCookies.user === 'admin') {
+    if (req.session.user === 'admin') {
       next();
     }
     else{
